@@ -17,7 +17,8 @@ public class Bullet : MonoBehaviour
         if(coll.gameObject.tag == "Enemy")
         {
             EnemyController hit = coll.GetComponent<EnemyController>();
-            hit.TakeDamage(damage);
+            hit.TakeDamage(damage, transform);
+            Destroy(gameObject);
         }
     }
 }

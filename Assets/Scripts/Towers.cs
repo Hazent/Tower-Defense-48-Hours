@@ -7,5 +7,5 @@ public class Towers
 {
     public int cost;
     public GameObject UI;
-    public GameObject tower;
+    public GameObject towerObj;
 }

@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Animations")]
     public GameObject hit;
+    public GameObject death;
 
     [Header("Combat")]
     public float startTimeBtwShots;
@@ -32,7 +33,7 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
-            death();
+            Death();
         }
 
         if(speed == 0)
@@ -48,28 +49,30 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, Transform bullet)
     {
+        //Instantiate(hit, bullet.position, bullet.rotation);
         health -= amount;
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Tower")
+        if (coll.gameObject.tag == "Tower" || coll.gameObject.tag == "Enemy")
         {
             speed = 0f;
         }
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
-        if(coll.gameObject.tag == "Tower")
+        if(coll.gameObject.tag == "Tower" || coll.gameObject.tag == "Enemy")
         {
             speed = oldSpeed;
         }
     }
 
-    void death()
+    void Death()
     {
+        Instantiate(death, transform.position, transform.rotation);
         int amount = Random.Range(1, 5);
         for(var i = 0; i < amount; i++)
         {

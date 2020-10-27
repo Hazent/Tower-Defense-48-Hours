@@ -43,9 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 424182071
+    locked: 0
   - name: Ground
     uniqueID: 2626306257
     locked: 0
   - name: Objects
     uniqueID: 2948467175
+    locked: 0
+  - name: Gold
+    uniqueID: 1748772277
     locked: 0

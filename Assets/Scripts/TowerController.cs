@@ -39,7 +39,7 @@ public class TowerController : MonoBehaviour
         health -= amount;
     }
 
-    private void Death()
+    public void Death()
     {
         Destroy(gameObject);
     }
