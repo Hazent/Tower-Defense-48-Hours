@@ -8,6 +8,7 @@ public class TowerController : MonoBehaviour
     public float timeBtwShots;
     public float health;
     public float damage;
+    public Era era;
     public GameObject bullet;
 
     void Start()
@@ -43,3 +44,4 @@ public class TowerController : MonoBehaviour
         Destroy(gameObject);
     }
 }
+

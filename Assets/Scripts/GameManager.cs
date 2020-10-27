@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> UI;
     public List<GameObject> towers;
     public List<Towers> towerMakker;
+    public Era currentTowerEra;
+    private Towers towermakker;
 
     [Header("Game Stats")]
     public float gold;
@@ -27,9 +29,11 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
+        currentTowerEra = tower.GetComponent<TowerController>().era;
+        towermakker = towerMakker.IndexOf(tower);
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             tower = towers[0];
@@ -41,3 +45,10 @@ public class GameManager : MonoBehaviour
         }
     }
 }
+public enum Era
+{
+    Past,
+    Current,
+    Future
+}
+
