@@ -11,9 +11,12 @@ public class TowerController : MonoBehaviour
     public Era era;
     public GameObject bullet;
 
+    private Transform barrel;
+
     void Start()
     {
         timeBtwShots = startTimeBtwShots;
+        barrel = this.gameObject.transform.GetChild(0);
     }
 
     // Update is called once per frame
@@ -23,7 +26,7 @@ public class TowerController : MonoBehaviour
 
         if(timeBtwShots <= 0)
         {
-            Instantiate(bullet, transform.position, transform.rotation);
+            Instantiate(bullet, barrel.position, transform.rotation);
             bullet.GetComponent<Bullet>().damage = damage;
             timeBtwShots = startTimeBtwShots;
         }

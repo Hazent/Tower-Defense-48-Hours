@@ -6,6 +6,7 @@ using UnityEngine;
 public class Towers
 {
     public int cost;
+    public int units;
     public GameObject UI;
-    public GameObject towerObj;
+    public GameObject towerObj; 
 }

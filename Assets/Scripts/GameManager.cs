@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public float spawnEnemy;
     public float currentEnemy;
     public float maxEnemy;
+    public bool bossWave;
 
     [Header("UI")]
     public Text goldText;
@@ -32,14 +33,31 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         selectedTower = towerMakker[0].towerObj;
+        currentEnemy = maxEnemy;
     }
 
     void Update()
     {
         currentTowerEra = selectedTower.GetComponent<TowerController>().era;
 
-        goldText.text = "GOLD: " + gold;
+        //UI Stuff
+        goldText.text = "$" + gold;
 
+        if (currentWave < maxWaves + 1)
+        {
+            waveText.text = currentWave + "/" + maxWaves;
+        } 
+        else
+        {
+            waveText.text = "BOSS WAVE";
+            bossWave = true;
+        }
+
+        enemyText.text = currentEnemy + "/" + maxEnemy;
+
+        unitsText.text = currentUnit + "/" + maxUnits; 
+
+        //Tower Selection
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             towerInfo = towerMakker[0];
@@ -65,6 +83,26 @@ public class GameManager : MonoBehaviour
             towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
             towerInfo.UI.GetComponentInChildren<Text>().text = "Active";            
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            towerInfo = towerMakker[2];
+            selectedTower = towerInfo.towerObj;
+            for (var i = 0; i < towerMakker.Count; i++)
+            {
+                towerMakker[i].UI.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+                towerMakker[i].UI.GetComponentInChildren<Text>().text = "Inactive";
+            }
+            towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
+            towerInfo.UI.GetComponentInChildren<Text>().text = "Active";
+        }
+
+        if (currentEnemy == 0)
+        {
+            currentWave++;
+            spawnEnemy = 0;
+            currentEnemy = maxEnemy;
+        }
     }
 }
 public enum Era
@@ -73,4 +111,3 @@ public enum Era
     Current,
     Future
 }
-

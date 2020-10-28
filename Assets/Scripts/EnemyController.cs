@@ -20,11 +20,18 @@ public class EnemyController : MonoBehaviour
     public float timeBtwShots;
     public GameObject bullet;
     public float bulletSpeed;
+    private Transform barrel;
+
+    private GameObject gameManager;
+    private GameManager manager;
 
     void Start()
     {
         oldSpeed = speed;
         timeBtwShots = startTimeBtwShots;
+        gameManager = GameObject.FindGameObjectWithTag("GameController");
+        manager = gameManager.GetComponent<GameManager>();
+        barrel = this.gameObject.transform.GetChild(0);
     }
 
     void Update()
@@ -61,6 +68,12 @@ public class EnemyController : MonoBehaviour
         {
             speed = 0f;
         }
+
+        if(coll.gameObject.tag == "Base")
+        {
+            coll.gameObject.GetComponent<BaseController>().TakeDamage(damage);
+            Destroy(gameObject);
+        }
     }
     private void OnTriggerExit2D(Collider2D coll)
     {
@@ -73,6 +86,7 @@ public class EnemyController : MonoBehaviour
     void Death()
     {
         Instantiate(death, transform.position, transform.rotation);
+        manager.currentEnemy--;
         int amount = Random.Range(1, 5);
         for(var i = 0; i < amount; i++)
         {

@@ -20,5 +20,11 @@ public class Bullet : MonoBehaviour
             hit.TakeDamage(damage, transform);
             Destroy(gameObject);
         }
+
+        if(coll.gameObject.tag == "Wall")
+        {
+            Debug.Log("Got Collision");
+            Destroy(gameObject);
+        }
     }
 }

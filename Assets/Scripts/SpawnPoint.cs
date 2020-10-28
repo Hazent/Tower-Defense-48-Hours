@@ -19,15 +19,32 @@ public class SpawnPoint : MonoBehaviour
         manager = gameManager.GetComponent<GameManager>();
         sprite = gameObject.GetComponent<SpriteRenderer>();
     }
+    private void FixedUpdate()
+    {
+        if (spawned == false)
+        {
+            sprite.color = new Color32(0, 255, 0, 125);
+        } 
+        else
+        {
+            sprite.color = new Color32(255, 0, 0, 125);
+        }
+    }
 
     private void OnMouseUp()
     {
-        if (era == manager.currentTowerEra && spawned == false)
+        if (era == manager.currentTowerEra && spawned == false && manager.gold >= manager.towerInfo.cost)
         {
             spawnedTower = Instantiate(manager.selectedTower, transform.position, Quaternion.identity);
-            sprite.color = new Color32(255, 0, 0, 125);
+            manager.gold -= manager.towerInfo.cost;
             spawned = true;
-        } else
+        } 
+        else if(manager.gold < manager.towerInfo.cost)
+        {
+            StartCoroutine(ShowMessage("Not enough Gold", 2));
+            Debug.Log("Not enough Gold");
+        } 
+        else
         {
            StartCoroutine(ShowMessage("Not of the correct era!", 2));
             Debug.Log("Not the correct era!");
@@ -39,7 +56,15 @@ public class SpawnPoint : MonoBehaviour
         if (Input.GetMouseButtonUp(1))
         {
             Destroy(spawnedTower);
-            sprite.color = new Color32(0, 255, 0, 125);
+            manager.gold += manager.towerInfo.cost / 2;
+            spawned = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D coll)
+    {
+        if(coll.gameObject.tag == "Tower")
+        {
             spawned = false;
         }
     }
