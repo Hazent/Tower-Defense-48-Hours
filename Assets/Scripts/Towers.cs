@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Towers
 {
-    public int cost;
+    public float cost;
     public int units;
     public GameObject UI;
     public GameObject towerObj; 

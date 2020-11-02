@@ -72,6 +72,7 @@ public class EnemyController : MonoBehaviour
         if(coll.gameObject.tag == "Base")
         {
             coll.gameObject.GetComponent<BaseController>().TakeDamage(damage);
+            manager.currentEnemy--;
             Destroy(gameObject);
         }
     }

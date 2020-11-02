@@ -8,6 +8,7 @@ TagManager:
   - Tower
   - Wall
   - Base
+  - Boss
   layers:
   - Default
   - TransparentFX

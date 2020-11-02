@@ -26,5 +26,12 @@ public class Bullet : MonoBehaviour
             Debug.Log("Got Collision");
             Destroy(gameObject);
         }
+
+        if(coll.gameObject.tag == "Boss")
+        {
+            BossController hit = coll.GetComponent<BossController>();
+            hit.TakeDamage(damage, transform);
+            Destroy(gameObject);
+        }
     }
 }

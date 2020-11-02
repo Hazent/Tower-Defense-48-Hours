@@ -33,20 +33,25 @@ public class SpawnPoint : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (era == manager.currentTowerEra && spawned == false && manager.gold >= manager.towerInfo.cost)
+        if (era == manager.currentTowerEra && spawned == false && manager.gold >= manager.towerInfo.cost && manager.maxUnits >= manager.currentUnit + manager.towerInfo.units)
         {
             spawnedTower = Instantiate(manager.selectedTower, transform.position, Quaternion.identity);
             manager.gold -= manager.towerInfo.cost;
+            manager.currentUnit += manager.towerInfo.units;
             spawned = true;
         } 
         else if(manager.gold < manager.towerInfo.cost)
         {
-            StartCoroutine(ShowMessage("Not enough Gold", 2));
+            StartCoroutine(ShowMessage("Not enough Gold!", 2));
             Debug.Log("Not enough Gold");
         } 
+        else if(manager.maxUnits < manager.currentUnit + manager.towerInfo.units)
+        {
+            StartCoroutine(ShowMessage("Not enough Units left!", 2));
+        }
         else
         {
-           StartCoroutine(ShowMessage("Not of the correct era!", 2));
+            StartCoroutine(ShowMessage("Not of the correct era!", 2));
             Debug.Log("Not the correct era!");
         }
     }
@@ -66,6 +71,7 @@ public class SpawnPoint : MonoBehaviour
         if(coll.gameObject.tag == "Tower")
         {
             spawned = false;
+            manager.currentUnit -= manager.towerInfo.units;
         }
     }
 

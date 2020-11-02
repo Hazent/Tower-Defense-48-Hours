@@ -29,11 +29,28 @@ public class GameManager : MonoBehaviour
     public Text enemyText;
     public Text waveText;
     public Text unitsText;
+    public GameObject pauseMenu;
+    public bool paused = false;
+
+    private KeyCode[] keyCodes =
+    {
+        KeyCode.Alpha1,
+        KeyCode.Alpha2,
+        KeyCode.Alpha3,
+        KeyCode.Alpha4,
+        KeyCode.Alpha5,
+        KeyCode.Alpha6
+    };
 
     private void Awake()
     {
         selectedTower = towerMakker[0].towerObj;
         currentEnemy = maxEnemy;
+
+        for(var i = 0; i < towerMakker.Count; i++)
+        {
+            towerMakker[i].UI.GetComponentInChildren<Text>().text = towerMakker[i].cost.ToString();
+        }
     }
 
     void Update()
@@ -58,45 +75,28 @@ public class GameManager : MonoBehaviour
         unitsText.text = currentUnit + "/" + maxUnits; 
 
         //Tower Selection
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for(int i = 0; i < keyCodes.Length; i++)
         {
-            towerInfo = towerMakker[0];
-            selectedTower = towerInfo.towerObj;
-            for (var i = 0; i < towerMakker.Count; i++)
+            if (Input.GetKeyDown(keyCodes[i]))
             {
-                towerMakker[i].UI.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-                towerMakker[i].UI.GetComponentInChildren<Text>().text = "Inactive";
+                TowerSelection(i);
             }
-            towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-            towerInfo.UI.GetComponentInChildren<Text>().text = "Active";            
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        //Pause Menu
+        if(Input.GetButtonDown("Cancel") && !paused)
         {
-            towerInfo = towerMakker[1];
-            selectedTower = towerInfo.towerObj;
-            for (var i = 0; i < towerMakker.Count; i++)
-            {
-                towerMakker[i].UI.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-                towerMakker[i].UI.GetComponentInChildren<Text>().text = "Inactive";
-            }
-            towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-            towerInfo.UI.GetComponentInChildren<Text>().text = "Active";            
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            paused = true;
+        } else if (Input.GetButtonDown("Cancel") && paused)
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            paused = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            towerInfo = towerMakker[2];
-            selectedTower = towerInfo.towerObj;
-            for (var i = 0; i < towerMakker.Count; i++)
-            {
-                towerMakker[i].UI.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-                towerMakker[i].UI.GetComponentInChildren<Text>().text = "Inactive";
-            }
-            towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
-            towerInfo.UI.GetComponentInChildren<Text>().text = "Active";
-        }
-
+        //Wave System
         if (currentEnemy == 0)
         {
             currentWave++;
@@ -104,7 +104,19 @@ public class GameManager : MonoBehaviour
             currentEnemy = maxEnemy;
         }
     }
+
+    void TowerSelection (int number)
+    {
+        towerInfo = towerMakker[number];
+        selectedTower = towerInfo.towerObj;
+        for (var i = 0; i < towerMakker.Count; i++)
+        {
+            towerMakker[i].UI.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+        }
+        towerInfo.UI.GetComponent<Image>().color = new Color32(255, 0, 0, 255);
+    }
 }
+
 public enum Era
 {
     Past,
